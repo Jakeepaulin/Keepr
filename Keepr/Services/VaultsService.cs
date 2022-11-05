@@ -46,4 +46,9 @@ public void DeleteVault(int vaultId, string userId){
     _repo.DeleteVault(vaultId);
   }
 
+  internal object GetMyVaults(string userId)
+  {
+    return _repo.GetMyVaults(userId);
+
+  }
 }

@@ -45,6 +45,9 @@ public class Startup
 
     services.AddTransient<AccountsRepository>();
     services.AddTransient<AccountService>();
+
+    services.AddTransient<ProfilesRepository>();
+    services.AddTransient<ProfilesService>();
   }
 
   private void ConfigureCors(IServiceCollection services)

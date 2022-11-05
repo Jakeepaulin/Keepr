@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS accounts(
   name varchar(255) COMMENT 'User Name',
   email varchar(255) COMMENT 'User Email',
   picture varchar(255) COMMENT 'User Picture',
-  coverImg VARCHAR (255) COMMENT 'User Cover Img'
+  coverImg VARCHAR (255) NOT NULL DEFAULT 'https://cdn-icons-png.flaticon.com/512/21/21104.png' COMMENT 'User Cover Img'
 ) default charset utf8 COMMENT '';
 
 CREATE TABLE IF NOT EXISTS keeps(

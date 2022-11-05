@@ -58,7 +58,25 @@ public class VaultsRepository : BaseRepository
     }
   }
 
-internal void DeleteVault (int id)
+  internal List<Vault> GetMyVaults(string userId)
+  {
+    var sql = @"
+      SELECT 
+        vault.*,
+        a.*,
+      FROM vaults vault
+      JOIN accounts a ON a.id = vault.creatorId
+      WHERE vault.creatorId = @userId
+    ;";
+
+    return _db.Query<Vault, Profile, Vault>(sql, (vault, profile) =>
+    {
+      vault.Creator = profile;
+      return vault;
+    }, new { userId }).ToList();
+  }
+
+  internal void DeleteVault (int id)
 {
   _db.Execute("DELETE FROM vaults WHERE id = @id", new {id});
 }

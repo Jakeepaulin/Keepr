@@ -46,7 +46,12 @@ private readonly KeepsRepository _repo;
     return updated;
   }
 
-public void DeleteKeep(int keepId, string userId){
+  internal List<Keep> GetKeepsByVaultId(int vaultId)
+  {
+    return _repo.GetKeepsByVaultId(vaultId);
+  }
+
+  public void DeleteKeep(int keepId, string userId){
     var keep = GetKeepById(keepId);
     if (keep.CreatorId != userId){
       throw new Exception("Yo! You Can't Delete what ain't yours!");

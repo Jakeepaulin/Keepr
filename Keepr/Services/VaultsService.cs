@@ -9,6 +9,19 @@ private readonly VaultsRepository _repo;
     _repo = repo;
   }
 
+  public Vault GetVaultById(int vaultId, Account userInfo){
+    Vault vault = _repo.GetVaultById(vaultId);
+    if (vault == null){
+      throw new Exception("That's a bad Vault Id");
+    }
+    if (vault.IsPrivate == true && userInfo.Id != vault.CreatorId)
+    {
+      throw new Exception("This ain't your vault to look at");
+
+    }
+    return vault;
+  }
+
   public Vault GetVaultById(int vaultId){
     Vault vault = _repo.GetVaultById(vaultId);
     if (vault == null){

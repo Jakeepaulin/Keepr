@@ -9,7 +9,7 @@ private readonly VaultKeepsRepository _repo;
     _repo = repo;
   }
 
-  public VaultKeep CreateVaultKeep(VaultKeep newVaultKeep){
+  public VaultKeep CreateVaultKeep(VaultKeep newVaultKeep, string userId){
     return _repo.CreateVaultKeep(newVaultKeep);
   }
 

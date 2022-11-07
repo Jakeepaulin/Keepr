@@ -19,7 +19,8 @@ public class KeepsRepository : BaseRepository
     return GetKeepById(id);
   }
 
-  internal List<Keep> GetAllKeeps(){
+  internal List<Keep> GetAllKeeps()
+  {
     string sql = @"
     SELECT
     k.*,
@@ -33,12 +34,13 @@ public class KeepsRepository : BaseRepository
       return keep;
     }).ToList();
   }
-  
-
-// NOTE View and Kept Count are going to need some work here in the sql
 
 
-  internal Keep GetKeepById(int keepId){
+  // NOTE View and Kept Count are going to need some work here in the sql
+
+
+  internal Keep GetKeepById(int keepId)
+  {
     string sql = @"
     SELECT
     k.*,
@@ -54,26 +56,34 @@ public class KeepsRepository : BaseRepository
     }, new { keepId }).FirstOrDefault();
   }
 
-  internal List<Keep> GetKeepsByVaultId(int vaultId){
+  internal List<Keep> GetKeepsByVaultId(int vaultId)
+  {
     string sql = @"
     SELECT 
     k.*,
     vk.*,
+    a.*,
     v.*
     FROM keeps k
     JOIN vaultKeeps vk ON vk.keepId = k.id
+    JOIN accounts a ON a.id = vk.creatorId
     JOIN vaults v ON vk.vaultId = v.id
     WHERE v.id = @vaultId
     ;";
-    return _db.Query<Keep, VaultKeep, Vault, Keep>(sql, (keep, vaultKeep, vault) =>
+    return _db.Query<Keep, VaultKeep, Profile, Vault, Keep>(sql, (keep, vaultKeep, profile, vault) =>
     {
       vaultKeep.KeepId = keep.Id;
       vaultKeep.VaultId = vault.Id;
-      keep.Creator = vault.Creator;
+      keep.VaultKeepId = vaultKeep.Id;
+      vault.VaultKeepId = vaultKeep.Id;
+      keep.Creator = profile;
       return keep;
-    }, new { vaultId }).ToList();  }
+    }, new { vaultId }).ToList();
+  }
 
-  internal Keep UpdateKeep(Keep data){
+
+  internal Keep UpdateKeep(Keep data)
+  {
     string sql = @"
     UPDATE keeps SET
     name = @Name,
@@ -83,21 +93,21 @@ public class KeepsRepository : BaseRepository
     ;";
     data.UpdatedAt = DateTime.Now;
 
-    var rowsAffected =_db.Execute(sql, data);
+    var rowsAffected = _db.Execute(sql, data);
     if (rowsAffected == 0)
     {
       throw new Exception("Unable to Update Keep");
     }
-    else{
-    return data;
+    else
+    {
+      return data;
     }
   }
 
-internal void DeleteKeep (int id)
-{
-  _db.Execute("DELETE FROM keeps WHERE id = @id", new {id});
+  internal void DeleteKeep(int id)
+  {
+    _db.Execute("DELETE FROM keeps WHERE id = @id", new { id });
+  }
 }
 
 
-
-}

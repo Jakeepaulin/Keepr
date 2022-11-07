@@ -3,10 +3,12 @@ namespace Keepr.Services;
 public class KeepsService
 {
 private readonly KeepsRepository _repo;
+private readonly VaultsRepository _vRepo;
 
-  public KeepsService(KeepsRepository repo)
+  public KeepsService(KeepsRepository repo, VaultsRepository vRepo)
   {
     _repo = repo;
+    _vRepo = vRepo;
   }
 
   public List<Keep> GetAllKeeps(){
@@ -46,8 +48,14 @@ private readonly KeepsRepository _repo;
     return updated;
   }
 
-  internal List<Keep> GetKeepsByVaultId(int vaultId)
+  internal List<Keep> GetKeepsByVaultId(int vaultId, Account userInfo)
   {
+    var vault = _vRepo.GetVaultById(vaultId);
+    if (vault.IsPrivate == true && userInfo.Id != vault.CreatorId)
+    {
+      throw new Exception("This ain't your vault to look at");
+
+    }
     return _repo.GetKeepsByVaultId(vaultId);
   }
 

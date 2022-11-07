@@ -12,5 +12,6 @@ public class Vault
   public string Img { get; set; }
   public bool IsPrivate { get; set; }
   public int VaultCount { get; set; }
+  public int VaultKeepId { get; set; }
 
 }

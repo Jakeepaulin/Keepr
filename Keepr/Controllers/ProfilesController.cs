@@ -1,5 +1,5 @@
 namespace Keepr.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ProfilesController : ControllerBase

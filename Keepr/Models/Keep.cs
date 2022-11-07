@@ -13,6 +13,7 @@ public class Keep {
   public int Views { get; set; }
   public int Kept { get; set; }
   public int Keeps { get; set; }
+  public int VaultKeepId { get; set; }
 
 }
 

@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS vaults(
   description VARCHAR(1000) NOT NULL,
   img VARCHAR(255) NOT NULL,
   isPrivate TINYINT DEFAULT 0 NOT NULL,
-  
   Foreign Key (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
 

@@ -3,7 +3,7 @@
     <div class="row pt-5 justify-content-center">
       <div class="col-md-8 d-flex justify-content-center">
         <img
-          :src="account?.coverImg"
+          :src="profile?.coverImg"
           alt="Cover Image"
           height="200"
           class="pt-3"
@@ -11,11 +11,11 @@
       </div>
       <div class="col-md-12 about text-center pt-3">
         <img
-          :src="account?.picture"
+          :src="profile?.picture"
           alt="account photo"
           class="rounded-circle pb-3"
         />
-        <h1>{{ account.name }}</h1>
+        <h1>{{ profile.name }}</h1>
         <h5>5 Vaults | 21 Keeps</h5>
       </div>
     </div>
@@ -56,7 +56,7 @@ export default {
     const router = useRouter();
     async function getKeepsByProfileId() {
       try {
-        await keepsService.getMyKeeps(route.params.profileId);
+        await keepsService.getKeepsByProfileId(route.params.profileId);
       } catch (error) {
         logger.error(error);
         Pop.error(error.message);
@@ -64,7 +64,7 @@ export default {
     }
     async function getVaultsByProfileId() {
       try {
-        await vaultsService.getMyVaults(route.params.profileId);
+        await vaultsService.getVaultsByProfileId(route.params.profileId);
       } catch (error) {
         logger.error(error);
         Pop.error(error.message);

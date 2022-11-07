@@ -6,18 +6,15 @@
     <router-view />
   </main>
 
-  <ModalComponent id="keep-modal">
-    <KeepForm />
-  </ModalComponent>
-  <ModalComponent id="vault-modal">
-    <VaultForm />
-  </ModalComponent>
+  <KeepForm />
+  <VaultForm />
 </template>
 
 <script>
 import { computed } from "vue";
 import { AppState } from "./AppState";
 import KeepForm from "./components/KeepForm.vue";
+import ModalComponent from "./components/ModalComponent.vue";
 import Navbar from "./components/Navbar.vue";
 import VaultForm from "./components/VaultForm.vue";
 
@@ -27,7 +24,7 @@ export default {
       appState: computed(() => AppState),
     };
   },
-  components: { Navbar, VaultForm, KeepForm },
+  components: { Navbar, VaultForm, ModalComponent, KeepForm },
 };
 </script>
 <style lang="scss">

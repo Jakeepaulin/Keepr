@@ -16,7 +16,6 @@
             aria-label="Close"
           ></button>
         </div>
-
         <slot> </slot>
       </div>
     </div>

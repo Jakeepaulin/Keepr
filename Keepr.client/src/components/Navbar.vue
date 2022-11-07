@@ -18,8 +18,28 @@
         Create
       </button>
       <ul class="dropdown-menu">
-        <li class="dropdown-item" href="#">New Keep</li>
-        <li class="dropdown-item" href="#">New Vault</li>
+        <li
+          class="dropdown-item"
+          data-bs-toggle="modal"
+          data-bs-target="#keep-modal"
+        >
+          <button
+            class="btn btn-light"
+            data-bs-toggle="modal"
+            data-bs-target="#keep-modal"
+          >
+            New Keep
+          </button>
+        </li>
+        <li class="dropdown-item">
+          <button
+            class="btn btn-light"
+            data-bs-toggle="modal"
+            data-bs-target="#vault-modal"
+          >
+            New Vault
+          </button>
+        </li>
       </ul>
     </div>
 

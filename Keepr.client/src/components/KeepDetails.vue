@@ -65,7 +65,7 @@
                 <router-link
                   :to="{
                     name: 'Profile',
-                    params: { profileId: keep.creatorId },
+                    params: { profileId: keep?.creatorId },
                   }"
                 >
                   <div data-bs-dismiss="modal">
@@ -115,6 +115,7 @@ export default {
       myVaults: computed(() => AppState.myVaults),
       async addKeepToVault() {
         try {
+          // Create VAULTKEEP on backend
           props.keep.keepId = route.params.keepId;
           console.log(props.keep);
           await keepsService.addKeepToVault(props.keep);

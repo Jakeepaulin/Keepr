@@ -30,8 +30,9 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { AppState } from "../AppState.js";
 import KeepCard from "../components/KeepCard.vue";
 import { vaultsService } from "../services/VaultsService.js";
 import { logger } from "../utils/Logger.js";
@@ -53,6 +54,7 @@ export default {
     });
     return {
       keeps: computed(() => AppState.keeps),
+      vault: computed(() => AppState.activeVault),
     };
   },
   components: { KeepCard },

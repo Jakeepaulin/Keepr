@@ -38,10 +38,16 @@ public class AccountsRepository
             UPDATE accounts
             SET 
               name = @Name,
-              picture = @Picture
+              picture = @Picture,
+              coverImg = @CoverImg
             WHERE id = @Id;";
     _db.Execute(sql, update);
     return update;
+  }
+
+  internal object UpdateAccount(Account accountData)
+  {
+    throw new NotImplementedException();
   }
 }
 

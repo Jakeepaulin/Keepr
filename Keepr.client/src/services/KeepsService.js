@@ -10,6 +10,8 @@ class KeepsService {
     AppState.keeps = res.data.map((k) => new Keep(k));
   }
 
+  async getMyKeeps() {}
+
   async getKeepsByProfileId(profileId) {
     const res = await api.get("api/profiles/" + profileId + "/keeps");
     logger.log(res.data);
@@ -31,6 +33,12 @@ class KeepsService {
 
   async removeKeep(id) {
     const res = await api.delete("api/keeps/" + id);
+    logger.log(res.data);
+    AppState.keeps = AppState.keeps.filter((k) => k.id != id);
+  }
+
+  async addKeepToVault(id) {
+    const res = await api.post("api/keeps/" + id);
     logger.log(res.data);
     AppState.keeps = AppState.keeps.filter((k) => k.id != id);
   }

@@ -35,6 +35,12 @@ class VaultsService {
     logger.log(res.data);
     AppState.vaults = AppState.vaults.filter((v) => v.id != id);
   }
+
+  async getMyVaults() {
+    const res = await api.get("account/vaults");
+    logger.log("Getting My Reports", res.data);
+    AppState.myVaults = res.data;
+  }
 }
 
 export const vaultsService = new VaultsService();

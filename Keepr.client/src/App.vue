@@ -8,11 +8,13 @@
 
   <KeepForm />
   <VaultForm />
+  <KeepDetails />
 </template>
 
 <script>
 import { computed } from "vue";
 import { AppState } from "./AppState";
+import KeepDetails from "./components/KeepDetails.vue";
 import KeepForm from "./components/KeepForm.vue";
 import ModalComponent from "./components/ModalComponent.vue";
 import Navbar from "./components/Navbar.vue";
@@ -24,7 +26,7 @@ export default {
       appState: computed(() => AppState),
     };
   },
-  components: { Navbar, VaultForm, ModalComponent, KeepForm },
+  components: { Navbar, VaultForm, KeepForm, KeepDetails },
 };
 </script>
 <style lang="scss">

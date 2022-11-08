@@ -1,8 +1,11 @@
 <template>
-  <div class="row">
+  <div class="row selectable">
     <div
-      class="card keep-card d-flex flex-column justify-content-end elevation-1 shadow"
+      class="card keep-card d-flex flex-column justify-content-end elevation-1 shadow selectable"
       :style="{ backgroundImage: `url(${keep?.img})` }"
+      data-bs-toggle="modal"
+      :data-bs-target="'#keepDetailsModal' + keep.Id"
+      @click="setActiveKeep()"
     >
       <div class="pb-2 text-light text-shadow d-flex justify-content-between">
         <h4>
@@ -37,10 +40,13 @@ export default {
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     return {
       account: computed(() => AppState.account),
       profile: computed(() => AppState.profile),
+      setActiveKeep() {
+        AppState.activeKeep = props.keep;
+      },
     };
   },
 };

@@ -9,19 +9,35 @@ public class ProfilesService
     _repo = repo;
   }
 
-  internal Profile GetProfileById(int profileId)
+  internal Profile GetProfileById(string id)
   {
-    return _repo.GetProfileById(profileId);
+    return _repo.GetProfileById(id);
   }
 
-  internal List<Keep> GetKeepsByProfileId(int profileId)
+  internal List<Keep> GetKeepsByProfileId(string profileId)
   {
     return _repo.GetKeepsByProfileId(profileId);
   }
 
-  internal List<Vault> GetVaultsByProfileId(int profileId)
+  internal List<Vault> GetVaultsByProfileId(string profileId, Account userInfo)
   {
-    return _repo.GetVaultsByProfileId(profileId);
-  }
+    var vaults = _repo.GetVaultsByProfileId(profileId);
 
+    if (vaults == null)
+    {
+      throw new Exception("That's a bad Vault Id");
+    }
+
+    foreach (var v in vaults)
+    {
+      if (v.IsPrivate == false)
+      {
+        return vaults;
+      }
+      else{
+        throw new Exception("this vault is private");
+      }
+    }
+    return vaults;
+  }
 }

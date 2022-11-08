@@ -58,22 +58,22 @@ public class VaultsRepository : BaseRepository
     }
   }
 
-  internal List<Vault> GetMyVaults(string userId)
+  internal List<Vault> GetMyVaults(string id)
   {
     var sql = @"
       SELECT 
-        vault.*,
-        a.*,
+      vault.*,
+      a.*
       FROM vaults vault
       JOIN accounts a ON a.id = vault.creatorId
-      WHERE vault.creatorId = @userId
+      WHERE vault.creatorId = @id
     ;";
 
     return _db.Query<Vault, Profile, Vault>(sql, (vault, profile) =>
     {
       vault.Creator = profile;
       return vault;
-    }, new { userId }).ToList();
+    }, new { id }).ToList();
   }
 
   internal void DeleteVault (int id)

@@ -6,18 +6,18 @@ public class ProfilesRepository : BaseRepository
   {
   }
 
-  internal Profile GetProfileById(int profileId)
+  internal Profile GetProfileById(string id)
   {
     string sql = @"
     SELECT
     *
-    FROM profiles
-    WHERE id = @profileId
+    FROM accounts
+    WHERE id = @id
     ;";
-    return _db.QueryFirstOrDefault<Profile>(sql, new { profileId });
+    return _db.QueryFirstOrDefault<Profile>(sql, new { id });
   }
 
-  internal List<Keep> GetKeepsByProfileId(int profileId)
+  internal List<Keep> GetKeepsByProfileId(string profileId)
   {
     string sql = @"
     SELECT 
@@ -34,7 +34,7 @@ public class ProfilesRepository : BaseRepository
     }, new { profileId }).ToList();
     }
 
-  internal List<Vault> GetVaultsByProfileId(int profileId)
+  internal List<Vault> GetVaultsByProfileId(string profileId)
   {
     string sql = @"
     SELECT 
@@ -42,7 +42,7 @@ public class ProfilesRepository : BaseRepository
     a.*
     FROM vaults v
     JOIN accounts a ON a.id = v.creatorId
-    WHERE a.id = @profileId
+    WHERE a.id = @profileId AND v.isPrivate = false
     ;";
     return _db.Query<Vault, Profile, Vault>(sql, (vault, profile) =>
     {

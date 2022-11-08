@@ -41,12 +41,8 @@ public class VaultKeepsController : ControllerBase
       if (newVaultKeep == null){
         throw new Exception("Bad Request");
       }
-      // NOTE Can solve post by moving this function below but then it breaks the get and delete do to it running the post every time
-      newVaultKeep.CreatorId = userInfo?.Id;
-      if (newVaultKeep.CreatorId != userInfo.Id || newVaultKeep.CreatorId == null){
-      throw new Exception("Yo! You Got a Bad Id!");
-    }
-      VaultKeep createdVaultKeep = _vs.CreateVaultKeep(newVaultKeep, userInfo?.Id);
+      newVaultKeep.CreatorId = userInfo.Id;
+      VaultKeep createdVaultKeep = _vs.CreateVaultKeep(newVaultKeep);
       return Ok(createdVaultKeep);
     }
     catch (Exception e)

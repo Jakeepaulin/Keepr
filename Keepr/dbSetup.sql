@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS accounts(
   updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
   name varchar(255) COMMENT 'User Name',
   email varchar(255) COMMENT 'User Email',
-  picture varchar(255) COMMENT 'User Picture',
+  picture TEXT COMMENT 'User Picture',
   coverImg VARCHAR (255) NOT NULL DEFAULT 'https://cdn-icons-png.flaticon.com/512/21/21104.png' COMMENT 'User Cover Img'
 ) default charset utf8 COMMENT '';
 
@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS keeps(
   updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
   creatorId VARCHAR (255) NOT NULL,
   name VARCHAR(255) NOT NULL,
-  description VARCHAR(1000) NOT NULL,
-  img VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  img TEXT NOT NULL,
   views INT NOT NULL DEFAULT 0,
   Foreign Key (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS vaults(
   updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
   creatorId VARCHAR (255) NOT NULL,
   name VARCHAR(255) NOT NULL,
-  description VARCHAR(1000) NOT NULL,
-  img VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  img TEXT NOT NULL,
   isPrivate TINYINT DEFAULT 0 NOT NULL,
   Foreign Key (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';

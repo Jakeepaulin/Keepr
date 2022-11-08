@@ -1,7 +1,6 @@
 namespace Keepr.Controllers;
-[Authorize]
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class ProfilesController : ControllerBase
 {
   private readonly ProfilesService _ps;
@@ -13,13 +12,11 @@ public class ProfilesController : ControllerBase
     _auth0Provider = auth0Provider;
   }
 
-  [Authorize]
   [HttpGet("{id}")]
-  public async Task<ActionResult<Profile>> GetProfileById(int id)
+  public ActionResult<Profile> GetProfileById(string id)
   {
     try
     {
-      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       Profile profile = _ps.GetProfileById(id);
       return Ok(profile);
     }
@@ -28,9 +25,8 @@ public class ProfilesController : ControllerBase
       return BadRequest(e.Message);
     }
   }
-  [Authorize]
   [HttpGet("{profileId}/keeps")]
-  public async Task<ActionResult<List<Keep>>> GetKeepsByProfileId(int profileId)
+  public async Task<ActionResult<List<Keep>>> GetKeepsByProfileId(string profileId)
   {
     try
     {
@@ -43,14 +39,13 @@ public class ProfilesController : ControllerBase
       return BadRequest(e.Message);
     }
   }
-  [Authorize]
   [HttpGet("{profileId}/vaults")]
-  public async Task<ActionResult<List<Vault>>> GetVaultsByProfileId(int profileId)
+  public async Task<ActionResult<List<Vault>>> GetVaultsByProfileId(string profileId)
   {
     try
     {
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-      List<Vault> vault = _ps.GetVaultsByProfileId(profileId);
+      List<Vault> vault = _ps.GetVaultsByProfileId(profileId, userInfo);
       return Ok(vault);
     }
     catch (Exception e)

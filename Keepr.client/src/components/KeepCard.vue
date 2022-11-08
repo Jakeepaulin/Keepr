@@ -9,16 +9,16 @@
           {{ keep?.name }}
         </h4>
         <div>
-          <!-- <router-link
-            :to="{ name: 'Profile', params: { profileId: profile?.id } }"
-          > -->
-          <img
-            :src="account?.picture || profile?.picture"
-            alt="account photo"
-            height="40"
-            class="rounded"
-          />
-          <!-- </router-link> -->
+          <router-link
+            :to="{ name: 'Profile', params: { profileId: keep.creatorId } }"
+          >
+            <img
+              :src="account?.picture || profile?.picture"
+              alt="account photo"
+              height="40"
+              class="rounded"
+            />
+          </router-link>
         </div>
       </div>
     </div>

@@ -18,6 +18,22 @@
           <h5>{{ keeps.length }} Keeps</h5>
         </div>
       </div>
+      <div class="col-md-12 d-flex justify-content-center">
+        <button
+          @click="makeVaultPrivate()"
+          class="btn btn-outline-dark mt-2"
+          v-if="!vault?.isPrivate"
+        >
+          Make Vault Private
+        </button>
+        <button
+          @click="makeVaultPublic()"
+          class="btn btn-outline-dark mt-2"
+          v-else-if="vault?.isPrivate"
+        >
+          Make Vault Public
+        </button>
+      </div>
     </div>
 
     <div class="row pt-3">
@@ -70,6 +86,34 @@ export default {
     return {
       keeps: computed(() => AppState.vaultKeeps),
       vault: computed(() => AppState.activeVault),
+      async makeVaultPrivate() {
+        try {
+          let updatedVault = AppState.activeVault;
+          updatedVault.isPrivate = true;
+          await vaultsService.makeVaultPrivate(
+            AppState.activeVault.id,
+            updatedVault
+          );
+          console.log(AppState.activeVault);
+        } catch (error) {
+          logger.error(error);
+          Pop.error(error.message);
+        }
+      },
+      async makeVaultPublic() {
+        try {
+          let updatedVault = AppState.activeVault;
+          updatedVault.isPrivate = false;
+          await vaultsService.makeVaultPublic(
+            AppState.activeVault.id,
+            updatedVault
+          );
+          console.log(AppState.activeVault);
+        } catch (error) {
+          logger.error(error);
+          Pop.error(error.message);
+        }
+      },
     };
   },
   components: { KeepCard },

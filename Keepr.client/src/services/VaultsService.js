@@ -41,6 +41,17 @@ class VaultsService {
     logger.log("Getting My Reports", res.data);
     AppState.myVaults = res.data;
   }
+
+  async makeVaultPrivate(vaultId, updatedVault) {
+    const res = await api.put("api/vaults/" + vaultId, updatedVault);
+    logger.log("Making vault Private");
+    AppState.activeVault = new Vault(res.data);
+  }
+  async makeVaultPublic(vaultId, updatedVault) {
+    const res = await api.put("api/vaults/" + vaultId, updatedVault);
+    logger.log("Making vault Public");
+    AppState.activeVault = new Vault(res.data);
+  }
 }
 
 export const vaultsService = new VaultsService();

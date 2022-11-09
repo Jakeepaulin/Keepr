@@ -20,9 +20,9 @@ class KeepsService {
 
   async getKeepById(id) {
     const res = await api.get("api/keeps/" + id);
+    let keep = res.data;
     logger.log(res.data);
-    AppState.keeps = new Keep(res.data);
-    return res.data;
+    keep.views++;
   }
 
   async createKeep(data) {
@@ -37,10 +37,14 @@ class KeepsService {
     AppState.keeps = AppState.keeps.filter((k) => k.id != id);
   }
 
-  async addKeepToVault(id) {
-    const res = await api.post("api/keeps/" + id);
+  async addVaultKeep(vaultId, keepId) {
+    // debugger;
+    const res = await api.post("api/vaultKeeps", {
+      vaultId: vaultId,
+      keepId: keepId,
+    });
     logger.log(res.data);
-    AppState.keeps = AppState.keeps.filter((k) => k.id != id);
+    AppState.vaultKeeps.push(res.data);
   }
 }
 

@@ -37,4 +37,8 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.bricks {
+  columns: 4;
+}
+</style>

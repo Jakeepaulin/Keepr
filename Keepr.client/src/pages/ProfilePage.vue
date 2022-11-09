@@ -16,7 +16,7 @@
           class="rounded-circle pb-3"
         />
         <h1>{{ profile?.name }}</h1>
-        <h5>5 Vaults | 21 Keeps</h5>
+        <h5>{{ vaults.length }} Vaults | {{ keeps.length }} Keeps</h5>
       </div>
     </div>
 

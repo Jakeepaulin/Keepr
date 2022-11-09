@@ -142,7 +142,9 @@ export default {
     const router = useRouter();
     async function getKeepsByProfileId() {
       try {
-        await keepsService.getMyKeeps(route.params.profileId);
+        let profileId = AppState.account.id;
+        console.log(profileId);
+        await keepsService.getKeepsByProfileId(profileId);
       } catch (error) {
         logger.error(error);
         Pop.error(error.message);

@@ -20,7 +20,7 @@ class VaultsService {
   async getVaultById(id) {
     const res = await api.get("api/vaults/" + id);
     logger.log(res.data);
-    AppState.vaults = new Keep(res.data);
+    AppState.vaults = new Vault(res.data);
     return res.data;
   }
 

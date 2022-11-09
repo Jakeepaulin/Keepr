@@ -1,22 +1,27 @@
+ch
 <template>
-  <div class="row selectable">
+  <div class="row">
     <div
-      class="card keep-card d-flex flex-column justify-content-end elevation-1 shadow selectable"
+      class="card keep-card d-flex flex-column justify-content-end elevation-1 shadow"
       :style="{ backgroundImage: `url(${keep?.img})` }"
-      data-bs-toggle="modal"
-      :data-bs-target="'#keepDetailsModal' + keep.Id"
-      @click="setActiveKeep()"
     >
       <div class="pb-2 text-light text-shadow d-flex justify-content-between">
-        <h4>
-          {{ keep?.name }}
-        </h4>
+        <div
+          class="selectable"
+          data-bs-toggle="modal"
+          :data-bs-target="'#keepDetailsModal' + keep?.Id"
+          @click="setActiveKeep()"
+        >
+          <h4>
+            {{ keep?.name }}
+          </h4>
+        </div>
         <div>
           <router-link
-            :to="{ name: 'Profile', params: { profileId: keep.creatorId } }"
+            :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }"
           >
             <img
-              :src="account?.picture || profile?.picture"
+              :src="keep.creator.picture"
               alt="account photo"
               height="40"
               class="rounded"
@@ -28,10 +33,15 @@
   </div>
 </template>
 
+<KeepDetails />
+
 <script>
 import { computed } from "vue";
 import { AppState } from "../AppState.js";
 import { Keep } from "../models/Keep.js";
+import { keepsService } from "../services/KeepsService.js";
+import { logger } from "../utils/Logger.js";
+import Pop from "../utils/Pop.js";
 
 export default {
   props: {
@@ -44,8 +54,16 @@ export default {
     return {
       account: computed(() => AppState.account),
       profile: computed(() => AppState.profile),
+
       setActiveKeep() {
-        AppState.activeKeep = props.keep;
+        try {
+          AppState.activeKeep = props.keep;
+          console.log("This is the active keep Id", AppState.activeKeep.id);
+          keepsService.getKeepById(AppState.activeKeep.id);
+        } catch (error) {
+          logger.error(error);
+          Pop.error(error.message);
+        }
       },
     };
   },

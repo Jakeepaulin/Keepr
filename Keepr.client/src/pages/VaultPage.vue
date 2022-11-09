@@ -41,8 +41,19 @@ import Pop from "../utils/Pop.js";
 export default {
   setup() {
     const route = useRoute();
+    async function getVaultById() {
+      try {
+        console.log(AppState.activeVault);
+        console.log("Trying the vault page", route.params.vaultId);
+        await vaultsService.getVaultById(route.params.vaultId);
+      } catch (error) {
+        logger.error(error);
+        Pop.error(error.message);
+      }
+    }
     async function getKeepsByVaultId() {
       try {
+        console.log("Trying to get Keeps for this page");
         await vaultsService.getKeepsByVaultId(route.params.vaultId);
       } catch (error) {
         logger.error(error);
@@ -50,6 +61,7 @@ export default {
       }
     }
     onMounted(() => {
+      getVaultById;
       getKeepsByVaultId;
     });
     return {

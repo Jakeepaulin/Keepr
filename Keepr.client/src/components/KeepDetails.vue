@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="keep"
     class="modal fade bd-example-modal-xl"
     :id="'keepDetailsModal' + keep?.Id"
     tabindex="-1"
@@ -44,24 +45,50 @@
               <div class="d-flex justify-content-around pb-3">
                 <div class="d-flex">
                   <div class="d-flex justify-content-center">
-                    <label for="type"></label>
-                    <select name="type" class="rounded">
-                      <option value="concert" v-for="v in myVaults" :key="v.id">
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Dropdown button
+                      </button>
+                      <ul class="dropdown-menu scrollable">
+                        <li
+                          @click="addKeepToVault(v)"
+                          v-for="v in myVaults"
+                          :key="v.id"
+                        >
+                          {{ v.name }}
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- <label for="type"></label>
+                    <select
+                      name="type"
+                      class="rounded"
+                      @change="addKeepToVault($event.target.value)"
+                    >
+                      <option v-for="v in myVaults" :value="v.id" :key="v.id">
                         {{ v.name }}
                       </option>
-                    </select>
+                    </select> -->
                   </div>
 
-                  <div class="ps-3">
+                  <div class="ps-3"></div>
+                  <!-- SECTION Delete Section -->
+                  <div class="ps-3" v-if="keep?.creatorId == account.id">
                     <button
                       class="btn btn-outline-dark"
+                      @click.stop="deleteKeep()"
                       data-bs-dismiss="modal"
                     >
-                      Save this Keep
+                      Delete this Keep
                     </button>
                   </div>
                 </div>
-
+                <!-- SECTION Profile Section -->
                 <router-link
                   :to="{
                     name: 'Profile',
@@ -87,7 +114,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { AppState } from "../AppState.js";
 import { Keep } from "../models/Keep.js";
 import { keepsService } from "../services/KeepsService.js";
@@ -95,30 +122,33 @@ import { vaultsService } from "../services/VaultsService.js";
 import Pop from "../utils/Pop.js";
 
 export default {
-  props: {
-    keep: { type: Keep, required: true },
-  },
-
   setup(props) {
-    async function getMyVaults() {
-      try {
-        await vaultsService.getMyVaults();
-      } catch (error) {
-        Pop.error(error.message);
-      }
-    }
-    onMounted(() => {
-      getMyVaults();
-    });
     return {
       keep: computed(() => AppState.activeKeep),
       myVaults: computed(() => AppState.myVaults),
-      async addKeepToVault() {
+      account: computed(() => AppState.account),
+      async addKeepToVault(vault) {
         try {
-          // Create VAULTKEEP on backend
-          props.keep.keepId = route.params.keepId;
-          console.log(props.keep);
-          await keepsService.addKeepToVault(props.keep);
+          console.log("This is the vault you're trying to pass", vault);
+          console.log("This is the activeKeep", AppState.activeKeep);
+          await keepsService.addVaultKeep(vault.id, AppState.activeKeep.id);
+        } catch (error) {
+          Pop.error(error);
+        }
+      },
+      async deleteKeep() {
+        try {
+          const yes = await Pop.confirm(
+            "Are you sure you want to Delete this Keep?"
+          );
+          if (!yes) {
+            return;
+          }
+          const keep = AppState.keeps.find(
+            (k) => k.id == AppState.activeKeep.id
+          );
+          await keepsService.removeKeep(keep.id);
+          Pop.success("This Keep has been Deleted");
         } catch (error) {
           Pop.error(error);
         }
@@ -133,5 +163,10 @@ export default {
   height: 60vh;
   width: 100%;
   object-fit: cover;
+}
+.scrollable {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
 }
 </style>

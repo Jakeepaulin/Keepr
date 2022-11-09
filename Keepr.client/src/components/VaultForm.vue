@@ -87,7 +87,7 @@ export default {
       editable,
       async createVault() {
         try {
-          await vaultsService.createKeep(editable.value);
+          await vaultsService.createVault(editable.value);
         } catch (error) {
           logger.error(error);
           Pop.error(error.message);

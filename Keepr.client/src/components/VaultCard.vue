@@ -1,6 +1,6 @@
 <template>
   <router-link
-    :to="{ name: 'Vault', params: { vaultId: vault.id } }"
+    :to="{ name: 'Vault', params: { vaultId: vault?.id } }"
     @click="setActiveVault()"
   >
     <div class="row">

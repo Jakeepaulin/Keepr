@@ -2,19 +2,21 @@
   <div class="container-fluid pt-5">
     <div class="row pt-5 justify-content-center">
       <div
-        class="col-md-8 d-flex justify-content-center"
+        class="col-md-10 d-flex justify-content-center imgHeight rounded"
         :style="{ backgroundImage: `url(${vault?.img})` }"
       >
-        <div class="col-md-12 about text-center pt-3">
+        <div class="col-md-12 about text-center pt-3 text-shadow">
           <h1>{{ vault?.name }}</h1>
-          <h5>{{ vault?.creator }}</h5>
+          <h5>{{ vault?.creator.name }}</h5>
         </div>
       </div>
     </div>
 
-    <div class="row pt-3">
-      <div class="card bg-secondary">
-        <h5>13 Keeps</h5>
+    <div class="row pt-3 justify-content-center">
+      <div class="col-md-3">
+        <div class="card bg-secondary text-center">
+          <h5>{{ keeps.length }} Keeps</h5>
+        </div>
       </div>
     </div>
 
@@ -43,8 +45,9 @@ export default {
     const route = useRoute();
     async function getVaultById() {
       try {
-        console.log(AppState.activeVault);
-        console.log("Trying the vault page", route.params.vaultId);
+        // console.log("1st one", route.params.vaultId);
+        // console.log("active vault", AppState.activeVault);
+        // console.log("Trying the vault page", route.params.vaultId);
         await vaultsService.getVaultById(route.params.vaultId);
       } catch (error) {
         logger.error(error);
@@ -53,7 +56,7 @@ export default {
     }
     async function getKeepsByVaultId() {
       try {
-        console.log("Trying to get Keeps for this page");
+        // console.log("Trying to get Keeps for this page");
         await vaultsService.getKeepsByVaultId(route.params.vaultId);
       } catch (error) {
         logger.error(error);
@@ -61,11 +64,11 @@ export default {
       }
     }
     onMounted(() => {
-      getVaultById;
-      getKeepsByVaultId;
+      getVaultById();
+      getKeepsByVaultId();
     });
     return {
-      keeps: computed(() => AppState.keeps),
+      keeps: computed(() => AppState.vaultKeeps),
       vault: computed(() => AppState.activeVault),
     };
   },
@@ -73,4 +76,15 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.imgHeight {
+  height: 25vh;
+  object-fit: cover;
+}
+.text-shadow {
+  color: aliceblue;
+  text-shadow: 1px 1px black, 0px 0px 5px rgb(125, 157, 176);
+  font-weight: bold;
+  letter-spacing: 0.08rem; /* Second Color  in text-shadow is the blur */
+}
+</style>

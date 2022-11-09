@@ -14,13 +14,13 @@ class VaultsService {
   async getKeepsByVaultId(vaultId) {
     const res = await api.get("api/vaults/" + vaultId + "/keeps");
     logger.log(res.data);
-    AppState.keeps = res.data.map((k) => new Keep(k));
+    AppState.vaultKeeps = res.data.map((k) => new Keep(k));
   }
 
   async getVaultById(id) {
     const res = await api.get("api/vaults/" + id);
     logger.log(res.data);
-    AppState.vaults = new Vault(res.data);
+    AppState.activeVault = new Vault(res.data);
     return res.data;
   }
 

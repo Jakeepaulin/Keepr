@@ -37,6 +37,12 @@ class KeepsService {
     AppState.keeps = AppState.keeps.filter((k) => k.id != id);
   }
 
+  async removeKeepFromVault(id) {
+    const res = await api.delete("api/vaultKeeps/" + id);
+    logger.log(res.data);
+    AppState.keeps = AppState.keeps.filter((k) => k.id != id);
+  }
+
   async addVaultKeep(vaultId, keepId) {
     const res = await api.post("api/vaultKeeps", {
       vaultId: vaultId,

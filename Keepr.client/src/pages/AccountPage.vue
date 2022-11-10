@@ -1,28 +1,32 @@
 <template>
   <div class="container-fluid pt-5">
     <div class="row pt-5 justify-content-center">
-      <div class="col-md-12 d-flex justify-content-center">
-        <img :src="account?.coverImg" alt="Cover Image" class="pt-3 cover" />
+      <div class="col-12">
+        <img :src="account?.coverImg" alt="" class="coverImg" />
       </div>
-      <div class="col-md-12 about text-center pt-3">
+      <!-- :style="{
+          backgroundImage: `url(${account?.coverImg})`,
+        }" -->
+      <div class="col-md-12 about text-center pt-3 profile">
         <img
           :src="account?.picture"
           alt="account photo"
+          height="100"
           class="rounded-circle pb-3"
         />
-        <h1>{{ account?.name }}</h1>
+        <h1 class="text-shadow">{{ account?.name }}</h1>
         <h5>{{ vaults.length }} Vaults | {{ keeps.length }} Keeps</h5>
+        <button
+          class="btn text-warning lighten-30 selectable text-uppercase"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#profile"
+        >
+          <div v-if="account.id">
+            <p class="text-dark">Edit Profile</p>
+          </div>
+        </button>
       </div>
-      <button
-        class="btn text-warning lighten-30 selectable text-uppercase"
-        type="button"
-        data-bs-toggle="modal"
-        data-bs-target="#profile"
-      >
-        <div v-if="account.id">
-          <p class="text-dark">Edit Profile</p>
-        </div>
-      </button>
     </div>
 
     <div class="row pt-3">
@@ -181,16 +185,29 @@ export default {
 </script>
 
 <style scoped>
-img {
-  max-width: 100px;
-}
 .text {
   color: midnightblue !important;
+}
+.profile {
+  position: absolute;
+  bottom: 50%;
 }
 
 .cover {
   height: 20vh;
   object-fit: cover;
   width: 100vw;
+}
+.coverImg {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+  position: relative;
+}
+.text-shadow {
+  color: aliceblue;
+  text-shadow: 1px 1px black, 0px 0px 5px rgb(125, 157, 176);
+  font-weight: bold;
+  letter-spacing: 0.08rem; /* Second Color  in text-shadow is the blur */
 }
 </style>

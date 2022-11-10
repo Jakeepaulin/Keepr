@@ -51,6 +51,7 @@
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
+                        v-if="!vault"
                       >
                         Dropdown button
                       </button>
@@ -85,6 +86,18 @@
                       data-bs-dismiss="modal"
                     >
                       Delete this Keep
+                    </button>
+                  </div>
+                  <div
+                    class="ps-3"
+                    v-if="keep?.creatorId == account.id && vault"
+                  >
+                    <button
+                      class="btn btn-outline-dark"
+                      @click.stop="removeKeepFromVault()"
+                      data-bs-dismiss="modal"
+                    >
+                      Remove this Keep from this Vault
                     </button>
                   </div>
                 </div>
@@ -126,6 +139,7 @@ export default {
     return {
       keep: computed(() => AppState.activeKeep),
       myVaults: computed(() => AppState.myVaults),
+      vault: computed(() => AppState.activeVault),
       account: computed(() => AppState.account),
       async addKeepToVault(vault) {
         try {
@@ -149,6 +163,23 @@ export default {
             (k) => k.id == AppState.activeKeep.id
           );
           await keepsService.removeKeep(keep.id);
+          Pop.success("This Keep has been Deleted");
+        } catch (error) {
+          Pop.error(error);
+        }
+      },
+      async removeKeepFromVault() {
+        try {
+          const yes = await Pop.confirm(
+            "Are you sure you want to remove this Keep?"
+          );
+          if (!yes) {
+            return;
+          }
+
+          await keepsService.removeKeepFromVault(
+            AppState.activeKeep.vaultKeepId
+          );
           Pop.success("This Keep has been Deleted");
         } catch (error) {
           Pop.error(error);

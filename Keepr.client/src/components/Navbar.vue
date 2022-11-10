@@ -14,7 +14,7 @@
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
-        v-if="account.id"
+        v-if="account"
       >
         Create
       </button>
@@ -44,8 +44,8 @@
       </ul>
     </div>
 
-    <div class="d-flex flex-column align-items-center flex-wrap pt-1 ps-5">
-      <p>The Keepr Co.</p>
+    <div class="pt-1 ps-5">
+      <img src="../assets/img/Keepr logo.png" alt="" height="50" />
     </div>
 
     <div class="collapse navbar-collapse" id="navbarText">

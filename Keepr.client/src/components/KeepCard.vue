@@ -1,29 +1,35 @@
 ch
 <template>
-  <div class="row selectable" @click="setActiveKeep()">
+  <div class="rounded">
     <div
-      class="card keep-card d-flex flex-column justify-content-end elevation-1 shadow selectable"
-      :style="{ backgroundImage: `url(${keep?.img})` }"
+      class="card d-flex flex-column justify-content-end elevation-1 shadow selectable rounded"
+      @click="setActiveKeep()"
       data-bs-toggle="modal"
       :data-bs-target="'#keepDetailsModal' + keep?.Id"
     >
-      <div class="pb-2 text-light text-shadow d-flex justify-content-between">
-        <div>
-          <h4>
-            {{ keep?.name }}
-          </h4>
-        </div>
-        <div>
-          <router-link
-            :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }"
-          >
-            <img
-              :src="keep.creator?.picture"
-              alt="account photo"
-              height="40"
-              class="rounded"
-            />
-          </router-link>
+      <img :src="keep?.img" class="card-img rounded" alt="..." />
+      <div class="card-img-overlay d-flex flex-column justify-content-end">
+        <div class="pb-2 text-light text-shadow d-flex justify-content-between">
+          <div>
+            <h4>
+              {{ keep?.name }}
+            </h4>
+          </div>
+          <div>
+            <router-link
+              :to="{
+                name: 'Profile',
+                params: { profileId: keep?.creatorId },
+              }"
+            >
+              <img
+                :src="keep.creator?.picture"
+                alt="account photo"
+                height="40"
+                class="rounded"
+              />
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -51,7 +57,7 @@ export default {
     return {
       account: computed(() => AppState.account),
       profile: computed(() => AppState.profile),
-
+      vault: computed(() => AppState.activeVault),
       setActiveKeep() {
         try {
           AppState.activeKeep = props.keep;
@@ -69,8 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 .keep-card {
-  max-height: 40vh;
-  min-height: 30vh;
+  min-height: 40vh;
   border: 1rem;
 }
 

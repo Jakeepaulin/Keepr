@@ -1,6 +1,7 @@
 import { AppState } from "../AppState.js";
 import { Keep } from "../models/Keep.js";
 import { Vault } from "../models/Vault.js";
+import { router } from "../router.js";
 import { logger } from "../utils/Logger.js";
 import { api } from "./AxiosService.js";
 
@@ -34,6 +35,7 @@ class VaultsService {
     const res = await api.delete("api/vaults/" + id);
     logger.log(res.data);
     AppState.vaults = AppState.vaults.filter((v) => v.id != id);
+    router.push({ name: "Account" });
   }
 
   async getMyVaults() {

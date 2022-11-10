@@ -20,9 +20,9 @@ class KeepsService {
 
   async getKeepById(id) {
     const res = await api.get("api/keeps/" + id);
-    let keep = res.data;
+    AppState.activeKeep.views++;
     logger.log(res.data);
-    keep.views++;
+    console.log("Updated Active Keep", AppState.activeKeep);
   }
 
   async createKeep(data) {
@@ -38,7 +38,6 @@ class KeepsService {
   }
 
   async addVaultKeep(vaultId, keepId) {
-    // debugger;
     const res = await api.post("api/vaultKeeps", {
       vaultId: vaultId,
       keepId: keepId,

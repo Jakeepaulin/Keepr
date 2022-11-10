@@ -1,9 +1,7 @@
 <template>
-  <div class="container-fluid pt-5">
-    <div class="row pt-5 px-5">
-      <div class="col-md-3 col-sm-6 px-4 mb-3" v-for="k in keeps" :key="k.id">
-        <KeepCard :keep="k" />
-      </div>
+  <div class="container-fluid mt-5">
+    <div class="bricks py-5 mt-5">
+      <KeepCard v-for="k in keeps" :key="k.id" :keep="k" class="pt-3 px-3" />
     </div>
   </div>
 </template>
@@ -40,5 +38,9 @@ export default {
 <style scoped lang="scss">
 .bricks {
   columns: 4;
+  img.photo {
+    width: 192px;
+    margin-top: 1.5rem;
+  }
 }
 </style>

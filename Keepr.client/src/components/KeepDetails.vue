@@ -29,7 +29,7 @@
                 </h5>
                 <h5 class="px-4">
                   <i class="mdi mdi-safe"></i>
-                  {{ keep?.keeps }}
+                  {{ keep?.kept }}
                 </h5>
               </div>
 
@@ -132,6 +132,7 @@ export default {
           console.log("This is the vault you're trying to pass", vault);
           console.log("This is the activeKeep", AppState.activeKeep);
           await keepsService.addVaultKeep(vault.id, AppState.activeKeep.id);
+          Pop.success("This Keep has been Added to your Vault");
         } catch (error) {
           Pop.error(error);
         }

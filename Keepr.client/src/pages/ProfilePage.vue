@@ -2,12 +2,7 @@
   <div class="container-fluid pt-5">
     <div class="row pt-5 justify-content-center">
       <div class="col-md-8 d-flex justify-content-center">
-        <img
-          :src="profile?.coverImg"
-          alt="Cover Image"
-          height="200"
-          class="pt-3"
-        />
+        <img :src="profile?.coverImg" alt="Cover Image" class="pt-3" />
       </div>
       <div class="col-md-12 about text-center pt-3">
         <img

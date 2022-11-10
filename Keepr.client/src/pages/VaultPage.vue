@@ -1,6 +1,15 @@
 <template>
   <div class="container-fluid pt-5">
     <div class="row pt-5 justify-content-center">
+      <div class="col-md-12 d-flex justify-content-end">
+        <button
+          @click="removeVault()"
+          class="btn btn-outline-danger my-2"
+          v-if="account.id == vault?.creatorId"
+        >
+          Remove this vault from My Profile
+        </button>
+      </div>
       <div
         class="col-md-10 d-flex justify-content-center imgHeight rounded"
         :style="{ backgroundImage: `url(${vault?.img})` }"
@@ -18,7 +27,10 @@
           <h5>{{ keeps.length }} Keeps</h5>
         </div>
       </div>
-      <div class="col-md-12 d-flex justify-content-center">
+      <div
+        class="col-md-12 d-flex justify-content-center"
+        v-if="account.id == vault?.creatorId"
+      >
         <button
           @click="makeVaultPrivate()"
           class="btn btn-outline-dark mt-2"
@@ -48,10 +60,11 @@
 </template>
 
 <script>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import { AppState } from "../AppState.js";
 import KeepCard from "../components/KeepCard.vue";
+import { router } from "../router.js";
 import { vaultsService } from "../services/VaultsService.js";
 import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
@@ -83,9 +96,20 @@ export default {
       getVaultById();
       getKeepsByVaultId();
     });
+    watchEffect(() => {
+      if (
+        AppState.activeVault?.isPrivate &&
+        AppState.account.id != AppState.activeVault.creatorId
+      ) {
+        router.push({ name: "Home" });
+        Pop.toast("This Vault is private, sir");
+        AppState.activeVault = null;
+      }
+    });
     return {
       keeps: computed(() => AppState.vaultKeeps),
       vault: computed(() => AppState.activeVault),
+      account: computed(() => AppState.account),
       async makeVaultPrivate() {
         try {
           let updatedVault = AppState.activeVault;
@@ -109,6 +133,22 @@ export default {
             updatedVault
           );
           console.log(AppState.activeVault);
+        } catch (error) {
+          logger.error(error);
+          Pop.error(error.message);
+        }
+      },
+      async removeVault() {
+        try {
+          const yes = await Pop.confirm(
+            "Are you sure you want to Delete this Keep?"
+          );
+          if (!yes) {
+            return;
+          }
+          let removedVault = AppState.activeVault;
+          await vaultsService.removeVault(removedVault.id);
+          Pop.success("This Vault has been Deleted");
         } catch (error) {
           logger.error(error);
           Pop.error(error.message);

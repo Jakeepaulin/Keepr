@@ -24,9 +24,12 @@ public class KeepsRepository : BaseRepository
     string sql = @"
     SELECT
     k.*,
+    COUNT(vk.id) AS Kept,
     a.* 
     FROM keeps k
     JOIN accounts a ON a.id = k.creatorId
+    LEFT JOIN vaultKeeps vk ON vk.keepId = k.id
+    GROUP BY k.id
     ;";
     return _db.Query<Keep, Profile, Keep>(sql, (keep, profile) =>
     {
@@ -44,10 +47,13 @@ public class KeepsRepository : BaseRepository
     string sql = @"
     SELECT
     k.*,
+    COUNT(vk.id) AS Kept,
     a.*
     FROM keeps k
     JOIN accounts a ON a.id = k.creatorId
+    LEFT JOIN vaultKeeps vk ON vk.keepId = k.id
     WHERE k.id = @keepId
+    GROUP BY k.id
     ;";
     return _db.Query<Keep, Profile, Keep>(sql, (keep, profile) =>
     {
@@ -81,12 +87,21 @@ public class KeepsRepository : BaseRepository
     }, new { vaultId }).ToList();
   }
 
+  // internal void UpdateKeptCount(int keepId){
+  //   string sql = @"
+  //   UPDATE SET 
+  //   keptCount = @KeptCount
+  //   WHERE id = @Id
+  //   ;";
+  // }
+
 
   internal Keep UpdateKeep(Keep data)
   {
     string sql = @"
     UPDATE keeps SET
     name = @Name,
+    views = @Views,
     description = @Description,
     img = @Img
     WHERE id = @Id
@@ -98,10 +113,7 @@ public class KeepsRepository : BaseRepository
     {
       throw new Exception("Unable to Update Keep");
     }
-    else
-    {
       return data;
-    }
   }
 
   internal void DeleteKeep(int id)

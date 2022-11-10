@@ -1,17 +1,14 @@
 ch
 <template>
-  <div class="row">
+  <div class="row selectable" @click="setActiveKeep()">
     <div
-      class="card keep-card d-flex flex-column justify-content-end elevation-1 shadow"
+      class="card keep-card d-flex flex-column justify-content-end elevation-1 shadow selectable"
       :style="{ backgroundImage: `url(${keep?.img})` }"
+      data-bs-toggle="modal"
+      :data-bs-target="'#keepDetailsModal' + keep?.Id"
     >
       <div class="pb-2 text-light text-shadow d-flex justify-content-between">
-        <div
-          class="selectable"
-          data-bs-toggle="modal"
-          :data-bs-target="'#keepDetailsModal' + keep?.Id"
-          @click="setActiveKeep()"
-        >
+        <div>
           <h4>
             {{ keep?.name }}
           </h4>
@@ -21,7 +18,7 @@ ch
             :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }"
           >
             <img
-              :src="keep.creator.picture"
+              :src="keep.creator?.picture"
               alt="account photo"
               height="40"
               class="rounded"
@@ -58,7 +55,7 @@ export default {
       setActiveKeep() {
         try {
           AppState.activeKeep = props.keep;
-          console.log("This is the active keep Id", AppState.activeKeep.id);
+          console.log("This is the active keep Object", AppState.activeKeep);
           keepsService.getKeepById(AppState.activeKeep.id);
         } catch (error) {
           logger.error(error);

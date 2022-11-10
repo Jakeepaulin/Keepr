@@ -1,13 +1,8 @@
 <template>
   <div class="container-fluid pt-5">
     <div class="row pt-5 justify-content-center">
-      <div class="col-md-8 d-flex justify-content-center">
-        <img
-          :src="account?.coverImg"
-          alt="Cover Image"
-          height="200"
-          class="pt-3"
-        />
+      <div class="col-md-12 d-flex justify-content-center">
+        <img :src="account?.coverImg" alt="Cover Image" class="pt-3 cover" />
       </div>
       <div class="col-md-12 about text-center pt-3">
         <img
@@ -15,7 +10,7 @@
           alt="account photo"
           class="rounded-circle pb-3"
         />
-        <h1>{{ account.name }}</h1>
+        <h1>{{ account?.name }}</h1>
         <h5>{{ vaults.length }} Vaults | {{ keeps.length }} Keeps</h5>
       </div>
       <button
@@ -191,5 +186,11 @@ img {
 }
 .text {
   color: midnightblue !important;
+}
+
+.cover {
+  height: 20vh;
+  object-fit: cover;
+  width: 100vw;
 }
 </style>

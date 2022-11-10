@@ -21,7 +21,7 @@ private readonly VaultsRepository _vRepo;
       throw new Exception("That's a bad Keep Id");
     }
     keep.Views++;
-    UpdateKeep(keep);
+    _repo.UpdateKeep(keep);
     return keep;
   }
 

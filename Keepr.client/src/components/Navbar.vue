@@ -14,6 +14,7 @@
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        v-if="account.id"
       >
         Create
       </button>
@@ -56,10 +57,15 @@
 </template>
 
 <script>
+import { computed, watchEffect } from "vue";
+import { AppState } from "../AppState.js";
 import Login from "./Login.vue";
 export default {
   setup() {
-    return {};
+    watchEffect(() => AppState.account);
+    return {
+      account: computed(() => AppState.account),
+    };
   },
   components: { Login },
 };

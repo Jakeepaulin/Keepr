@@ -29,7 +29,7 @@
       </div>
       <div
         class="col-md-12 d-flex justify-content-center"
-        v-if="account.id == vault?.creatorId"
+        v-if="user.id == vault?.creatorId"
       >
         <button
           @click="makeVaultPrivate()"
@@ -79,6 +79,7 @@ export default {
         // console.log("Trying the vault page", route.params.vaultId);
         await vaultsService.getVaultById(route.params.vaultId);
       } catch (error) {
+        router.push({ name: "Home" });
         logger.error(error);
         Pop.error(error.message);
       }
@@ -96,20 +97,11 @@ export default {
       getVaultById();
       getKeepsByVaultId();
     });
-    watchEffect(() => {
-      if (
-        AppState.activeVault?.isPrivate &&
-        AppState.account.id != AppState.activeVault.creatorId
-      ) {
-        router.push({ name: "Home" });
-        Pop.toast("This Vault is private, sir");
-        AppState.activeVault = null;
-      }
-    });
     return {
       keeps: computed(() => AppState.vaultKeeps),
       vault: computed(() => AppState.activeVault),
       account: computed(() => AppState.account),
+      user: computed(() => AppState.user),
       async makeVaultPrivate() {
         try {
           let updatedVault = AppState.activeVault;

@@ -51,7 +51,6 @@
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
-                        v-if="!vault"
                       >
                         Dropdown button
                       </button>
@@ -79,7 +78,7 @@
 
                   <div class="ps-3"></div>
                   <!-- SECTION Delete Section -->
-                  <div class="ps-3" v-if="keep?.creatorId == account.id">
+                  <div class="px-3" v-if="keep?.creatorId == user.id">
                     <button
                       class="btn btn-outline-dark"
                       @click.stop="deleteKeep()"
@@ -88,16 +87,13 @@
                       Delete this Keep
                     </button>
                   </div>
-                  <div
-                    class="ps-3"
-                    v-if="keep?.creatorId == account.id && vault"
-                  >
+                  <div class="px-3" v-if="vault">
                     <button
                       class="btn btn-outline-dark"
                       @click.stop="removeKeepFromVault()"
                       data-bs-dismiss="modal"
                     >
-                      Remove this Keep from this Vault
+                      Remove from Vault
                     </button>
                   </div>
                 </div>
@@ -113,7 +109,7 @@
                       :src="keep?.creator.picture"
                       alt="account photo"
                       height="40"
-                      class="rounded selectable"
+                      class="rounded selectable px-3"
                     />
                   </div>
                 </router-link>
@@ -127,7 +123,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watchEffect } from "vue";
 import { AppState } from "../AppState.js";
 import { Keep } from "../models/Keep.js";
 import { keepsService } from "../services/KeepsService.js";
@@ -136,11 +132,13 @@ import Pop from "../utils/Pop.js";
 
 export default {
   setup(props) {
+    watchEffect(() => AppState.activeKeep);
     return {
       keep: computed(() => AppState.activeKeep),
       myVaults: computed(() => AppState.myVaults),
       vault: computed(() => AppState.activeVault),
       account: computed(() => AppState.account),
+      user: computed(() => AppState.user),
       async addKeepToVault(vault) {
         try {
           console.log("This is the vault you're trying to pass", vault);

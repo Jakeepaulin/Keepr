@@ -4,7 +4,7 @@
       <div class="col-12">
         <img :src="profile?.coverImg" alt="" class="coverImg" />
       </div>
-      <div class="col-md-12 about text-center pt-3 profile">
+      <div class="col-md-12 about text-center pt-3 profile text-shadow">
         <img
           :src="profile?.picture"
           alt="account photo"
@@ -101,5 +101,12 @@ export default {
 .profile {
   position: absolute;
   bottom: 56%;
+}
+
+.text-shadow {
+  color: aliceblue;
+  text-shadow: 1px 1px black, 0px 0px 5px rgb(125, 157, 176);
+  font-weight: bold;
+  letter-spacing: 0.08rem; /* Second Color  in text-shadow is the blur */
 }
 </style>

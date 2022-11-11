@@ -14,7 +14,7 @@
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
-        v-if="account"
+        v-if="user.isAuthenticated"
       >
         Create
       </button>
@@ -62,8 +62,8 @@ import { AppState } from "../AppState.js";
 import Login from "./Login.vue";
 export default {
   setup() {
-    watchEffect(() => AppState.account);
     return {
+      user: computed(() => AppState.user),
       account: computed(() => AppState.account),
     };
   },

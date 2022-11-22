@@ -5,6 +5,7 @@ import { api } from "./AxiosService.js";
 
 class KeepsService {
   async getAllKeeps() {
+    console.log("Trying to get Keeps");
     const res = await api.get("api/keeps");
     logger.log("[Getting All Keeps]", res.data);
     AppState.keeps = res.data.map((k) => new Keep(k));

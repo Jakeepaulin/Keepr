@@ -28,14 +28,17 @@ class KeepsService {
 
   async createKeep(data) {
     const res = await api.post("api/keeps", data);
-    logger.log(res.data);
-    AppState.keeps.push(new Keep(res.data));
+    let newKeep = new Keep(res.data);
+    AppState.keeps = [newKeep, ...AppState.keeps];
+    AppState.accountKeeps = [newKeep, ...AppState.accountKeeps];
   }
 
   async removeKeep(id) {
     const res = await api.delete("api/keeps/" + id);
     logger.log(res.data);
     AppState.keeps = AppState.keeps.filter((k) => k.id != id);
+    let index = AppState.keeps.findIndex((k) => k.id == id);
+    AppState.accountKeeps.splice(index, 1);
   }
 
   async removeKeepFromVault(id) {
@@ -71,6 +74,42 @@ class KeepsService {
     let keeps = res.data.map((k) => new Keep(k));
     AppState.offSet += keeps.length;
     AppState.keeps = [...AppState.keeps, ...keeps];
+  }
+
+  async editKeep(keepData) {
+    // console.log(keepData);
+
+    const res = await api.put(`api/keeps/${keepData.id}`, keepData);
+    // console.log(res.data);
+    let updated = new Keep(res.data);
+    AppState.activeKeep = updated;
+    Modal.getOrCreateInstance("#activeKeep").show();
+    let index = AppState.keeps.findIndex((k) => {
+      k.id == keepData.id;
+    });
+    AppState.keeps.splice(index, 1, updated);
+    let index2 = AppState.accountKeeps.findIndex((k) => {
+      k.id == keepData.id;
+    });
+    AppState.accountKeeps.splice(index2, 1, updated);
+  }
+
+  async paginate(direction) {
+    let offSet = AppState.offSet;
+    const res = await api.get("api/keeps", {
+      params: {
+        offSet: offSet,
+      },
+    });
+    // console.log("[keeps]", res.data);
+    let newKeeps = res.data.map((k) => new Keep(k));
+    if (direction == "prev") {
+      AppState.offSet -= newKeeps.length;
+      AppState.keeps = newKeeps;
+    } else AppState.offSet += newKeeps.length;
+    AppState.keeps = newKeeps;
+    // console.log(AppState.keeps);
+    // console.log(AppState.offSet);
   }
 }
 

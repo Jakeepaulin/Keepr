@@ -52,6 +52,26 @@ class KeepsService {
     logger.log(res.data);
     AppState.vaultKeeps.push(res.data);
   }
+  // SECTION new stuff added in
+  async getKeepsByQuery(query) {
+    const res = await api.get("api/keeps/search");
+    AppState.keeps = res.data.map((k) => new Keep(k));
+    AppState.keeps = AppState.keeps.filter((k) =>
+      k.name.toUpperCase().includes(query.toUpperCase())
+    );
+  }
+
+  async getKeepsByScroll() {
+    let offset = AppState.offSet;
+    const res = await api.get("api/keeps", {
+      params: {
+        offSet: offSet,
+      },
+    });
+    let keeps = res.data.map((k) => new Keep(k));
+    AppState.offSet += keeps.length;
+    AppState.keeps = [...AppState.keeps, ...keeps];
+  }
 }
 
 export const keepsService = new KeepsService();

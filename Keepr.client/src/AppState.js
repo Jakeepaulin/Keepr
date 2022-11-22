@@ -31,6 +31,7 @@ export const AppState = reactive({
   myVaults: [],
   accountKeeps: [],
   vaultedKeeps: [],
+  vaultKeepIds: [],
   offSet: 24,
   vaultEditForm: false,
   keepEditForm: false,

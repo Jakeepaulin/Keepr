@@ -11,7 +11,7 @@
         </router-link>
 
         <button
-          class="btn btn-secondary dropdown-toggle pt-1"
+          class="btn btn-secondary dropdown-toggle mt-2 create"
           type="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
@@ -45,7 +45,7 @@
         </ul>
       </div>
 
-      <div class="pt-1 ps-5">
+      <div class="col-md-9 pt-1 ps-5 d-flex justify-content-center">
         <img src="../assets/img/Keepr logo.png" alt="" height="50" />
       </div>
 
@@ -81,6 +81,9 @@ export default {
   width: 100vw;
   z-index: 200;
   height: 75px;
+}
+.create {
+  height: 40px;
 }
 .navShadow {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;

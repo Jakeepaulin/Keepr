@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid mt-5">
+    <SearchBar />
     <div class="bricks py-5 mt-5">
       <KeepCard v-for="k in keeps" :key="k.id" :keep="k" class="pt-3 px-3" />
     </div>
@@ -24,8 +25,26 @@ export default {
         Pop.error(error.message);
       }
     }
+    async function getKeepsByScroll() {
+      try {
+        await keepsService.getKeepsByScroll();
+      } catch (error) {
+        Pop.error(error, "[getKeepsByScroll]");
+      }
+    }
+    function infiniteScroll() {
+      window.onscroll = () => {
+        let bottomOfWindow =
+          document.documentElement.scrollTop + (window.innerHeight + 20);
+        let whatEver = document.documentElement.offsetHeight;
+        if (bottomOfWindow >= whatEver) {
+          getKeepsByScroll();
+        }
+      };
+    }
     onMounted(() => {
       getAllKeeps();
+      infiniteScroll();
     });
     return {
       keeps: computed(() => AppState.keeps),

@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid mt-5">
-    <SearchBar />
     <div class="bricks py-5 mt-5">
       <KeepCard v-for="k in keeps" :key="k.id" :keep="k" class="pt-3 px-3" />
     </div>
@@ -14,6 +13,7 @@ import { AppState } from "../AppState.js";
 import { keepsService } from "../services/KeepsService.js";
 import Pop from "../utils/Pop.js";
 import KeepCard from "../components/KeepCard.vue";
+import SearchBar from "../components/SearchBar.vue";
 
 export default {
   setup() {

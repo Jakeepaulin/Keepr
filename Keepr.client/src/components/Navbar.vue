@@ -2,55 +2,54 @@
   <nav
     class="navbar navbar-expand-lg navbar-dark bg-light px-3 d-flex shadow sticky-top navShadow"
   >
-    <div class="row justify-content-between">
-      <div class="d-flex flex-wrap align-content-center">
+    <div class="d-flex align-items-center justify-content-between w-100">
+      <div class="d-flex flex-wrap">
         <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
           <div class="d-flex flex-column align-items-center pt-1">
             <button class="btn btn-outline-dark">Home</button>
           </div>
         </router-link>
-        <div class="col-4 dropdown pt-1">
-          <button
-            class="btn btn-secondary dropdown-toggle pt-1"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            v-if="user.isAuthenticated"
+
+        <button
+          class="btn btn-secondary dropdown-toggle pt-1"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          v-if="user.isAuthenticated"
+        >
+          Create
+        </button>
+        <ul class="dropdown-menu">
+          <li
+            class="dropdown-item"
+            data-bs-toggle="modal"
+            data-bs-target="#keep-modal"
           >
-            Create
-          </button>
-          <ul class="dropdown-menu">
-            <li
-              class="dropdown-item"
+            <button
+              class="btn btn-light"
               data-bs-toggle="modal"
               data-bs-target="#keep-modal"
             >
-              <button
-                class="btn btn-light"
-                data-bs-toggle="modal"
-                data-bs-target="#keep-modal"
-              >
-                New Keep
-              </button>
-            </li>
-            <li class="dropdown-item">
-              <button
-                class="btn btn-light"
-                data-bs-toggle="modal"
-                data-bs-target="#vault-modal"
-              >
-                New Vault
-              </button>
-            </li>
-          </ul>
-        </div>
+              New Keep
+            </button>
+          </li>
+          <li class="dropdown-item">
+            <button
+              class="btn btn-light"
+              data-bs-toggle="modal"
+              data-bs-target="#vault-modal"
+            >
+              New Vault
+            </button>
+          </li>
+        </ul>
       </div>
 
-      <div class="col-4 pt-1 ps-5">
+      <div class="pt-1 ps-5">
         <img src="../assets/img/Keepr logo.png" alt="" height="50" />
       </div>
 
-      <div class="col-4 collapse navbar-collapse" id="navbarText">
+      <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto"></ul>
         <!-- LOGIN COMPONENT HERE -->
         <Login />
@@ -103,9 +102,6 @@ a:hover {
 button:active {
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-}
-.row {
-  flex-wrap: nowrap;
 }
 
 @media screen and (min-width: 768px) {

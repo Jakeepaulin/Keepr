@@ -64,4 +64,21 @@ public class AccountController : ControllerBase
       return BadRequest(e.Message);
     }
   }
+  [HttpGet("keeps")]
+  [Authorize]
+  public async Task<ActionResult<List<Keep>>> GetMyKeeps()
+  {
+    try
+    {
+      var userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      List<Keep> myKeeps = _accountService.GetMyKeeps(userInfo?.Id);
+
+      return Ok(myKeeps);
+
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
 }

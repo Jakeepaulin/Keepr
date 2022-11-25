@@ -49,5 +49,26 @@ public class AccountsRepository
   {
     throw new NotImplementedException();
   }
+
+internal List<Keep> GetMyKeeps(string id)
+  {
+    var sql = @"
+           SELECT 
+           k.*,
+           a.*
+           FROM keeps k
+           JOIN accounts a ON a.id = k.creatorId   
+           WHERE k.creatorId = @id
+           GROUP BY k.id  
+           ORDER BY k.createdAt ASC
+                ; ";
+    return _db.Query<Keep, Profile, Keep>(sql, (myKeeps, profile) =>
+     {
+       myKeeps.Creator = profile;
+
+       return myKeeps;
+     }, new { id }).ToList();
+
+    }
 }
 

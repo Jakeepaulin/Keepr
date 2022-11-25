@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid pt-5">
+  <div class="container animate__animated animate__fadeIn">
     <div class="row pt-5 justify-content-center">
       <div class="col-12">
         <img :src="account?.coverImg" alt="" class="coverImg" />
@@ -209,5 +209,31 @@ export default {
   text-shadow: 1px 1px black, 0px 0px 5px rgb(125, 157, 176);
   font-weight: bold;
   letter-spacing: 0.08rem; /* Second Color  in text-shadow is the blur */
+}
+.container {
+  --animate-duration: 500ms;
+  --animate-delay: 1s;
+}
+.coverImg {
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
+}
+.pImg {
+  box-shadow: none;
+}
+.profilePic {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+}
+.bricks {
+  columns: 4;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+@media only screen and (max-width: 768px) {
+  .bricks {
+    columns: 2;
+  }
 }
 </style>

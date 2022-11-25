@@ -15,7 +15,7 @@
               <img
                 :src="keep?.img"
                 alt=""
-                class="img-fluid rounded img-height"
+                class="img-fluid image rounded img-height"
               />
             </div>
 
@@ -51,8 +51,9 @@
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
+                        title="Put this Keep in one of your Vaults"
                       >
-                        Dropdown button
+                        Vault this Keep
                       </button>
                       <ul class="dropdown-menu scrollable">
                         <li
@@ -198,5 +199,27 @@ export default {
   height: auto;
   max-height: 200px;
   overflow-x: hidden;
+}
+
+.modal-body {
+  --animate-duration: 500ms;
+  --animate-delay: 1s;
+}
+
+.image {
+  object-fit: cover;
+  transition: all 0.25 ease;
+}
+
+@media only screen and (max-width: 768px) {
+  .image {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    height: 300px !important;
+    width: 400px !important;
+    object-fit: cover;
+  }
 }
 </style>

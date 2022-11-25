@@ -37,6 +37,6 @@ export const AppState = reactive({
   keepEditForm: false,
   paginationOn: false,
   darkTheme: false,
-  focusedBtn1: false,
+  button: false,
   fullCoverImg: false,
 });

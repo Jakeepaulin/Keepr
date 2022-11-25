@@ -109,26 +109,54 @@
           <span class="bShadow rounded p-1">{{ keeps?.length }} Keeps</span>
         </div>
       </div>
+      <!-- SECTION Vaults and Keeps Below -->
 
       <div class="row pt-3">
-        <div>
-          <h2>Vaults</h2>
+        <div class="col-md-12 text-dark text-center">
+          <button
+            @click="scroll()"
+            class="btn text-dark"
+            :class="button == false ? 'button' : ''"
+            data-bs-toggle="collapse"
+            data-bs-target="#vaultCollapse"
+            title="toggle vaults"
+          >
+            <h3>Vaults</h3>
+          </button>
+          <button
+            @click="scroll()"
+            class="btn text-dark"
+            :class="button == true ? 'button' : ''"
+            data-bs-toggle="collapse"
+            data-bs-target="#keepCollapse"
+            title="toggle keeps"
+          >
+            <h3>Keeps</h3>
+          </button>
         </div>
         <div
-          class="col-md-3 col-sm-6 px-4 mb-3"
-          v-for="v in vaults"
-          :key="v.id"
+          class="collapse animate__animated animate__fadeInLeft show"
+          id="vaultCollapse"
         >
-          <VaultCard :vault="v" />
+          <div class="col-md-12 border-bottom mt-2 mb-3 border-2 bg-dark"></div>
+          <div class="row mb-4">
+            <div class="col-md-3" v-for="v in vaults" :key="v.id">
+              <VaultCard :vault="v" />
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="row pt-3">
-        <div>
-          <h2>Keeps</h2>
-        </div>
-        <div class="col-md-3 col-sm-6 px-4 mb-3" v-for="k in keeps" :key="k.id">
-          <KeepCard :keep="k" />
+      <div
+        class="collapse animate__animated animate__fadeInLeft"
+        id="keepCollapse"
+      >
+        <div
+          class="col-md-12 p-1 border-bottom border-dark mt-2 mb-3 border-3"
+        ></div>
+        <div class="bricks mb-4">
+          <div class="my-3" v-for="k in keeps" :key="k.id">
+            <KeepCard :keep="k" />
+          </div>
         </div>
       </div>
     </div>
@@ -223,36 +251,35 @@ export default {
     watchEffect(() => {
       editable.value = { ...AppState.account };
     });
-    const route = useRoute();
     const router = useRouter();
-    async function getKeepsByProfileId() {
+    async function getAccountKeeps() {
       try {
-        let profileId = AppState.account.id;
-        console.log(profileId);
-        await keepsService.getKeepsByProfileId(profileId);
+        await accountService.getAccountKeeps();
       } catch (error) {
-        logger.error(error);
-        Pop.error(error.message);
+        Pop.error(error, "[getAccountKeeps]");
       }
     }
-    async function getVaultsByProfileId() {
+    async function getAccountVaults() {
       try {
-        await vaultsService.getMyVaults(route.params.profileId);
+        await accountService.getAccountVaults();
       } catch (error) {
-        logger.error(error);
-        Pop.error(error.message);
+        Pop.error(error, "[getAccountVaults]");
       }
     }
     onMounted(() => {
-      getKeepsByProfileId();
-      getVaultsByProfileId();
+      getAccountKeeps();
+      getAccountVaults();
     });
     // watchEffect(() => {})
     return {
       editable,
+      button: computed(() => AppState.button),
       account: computed(() => AppState.account),
-      keeps: computed(() => AppState.keeps),
-      vaults: computed(() => AppState.vaults),
+      keeps: computed(() => AppState.accountKeeps),
+      vaults: computed(() => AppState.accountVaults),
+      scroll() {
+        AppState.button = !AppState.button;
+      },
       async editAccount() {
         try {
           await accountService.editAccount(editable.value);

@@ -154,7 +154,7 @@
           class="col-md-12 p-1 border-bottom border-dark mt-2 mb-3 border-3"
         ></div>
         <div class="bricks mb-4">
-          <div class="my-3" v-for="k in keeps" :key="k.id">
+          <div class="my-3 px-5" v-for="k in keeps" :key="k.id">
             <KeepCard :keep="k" />
           </div>
         </div>
